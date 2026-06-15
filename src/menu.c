@@ -67,33 +67,35 @@ void medicineMenu() {
             default:
                 printf("Invalid choice!\n");
         }
-    } while(choice != 0);
+    } while(choice != 3);
 }
 
 void prescriptionMenu() {
     int choice;
+    Prescription *list = NULL;
+    int n = 0;
+    loadPrescriptions(&list, &n);
     do {
-        printf("\n=== PRESCRIPTION MENU ===\n");
-        printf("1. Add Prescription\n");
-        printf("2. Display Prescriptions\n");
-        printf("0. Back\n");
-        printf("Enter your choice: ");
+        printf("\n--- MENU QUAN LY DON THUOC ---\n");
+        printf("1. Them don thuoc moi\n");
+        printf("2. Hien thi danh sach don thuoc\n");
+        printf("3. Thoat va Luu du lieu\n");
+        printf("Nhap lua chon cua ban: ");
         scanf("%d", &choice);
 
         switch(choice) {
             case 1:
-                printf(" Adding prescription\n");
-                // addPrescription();
+                addPrescription(&list, &n);
                 break;
             case 2:
-                printf(" Displaying prescriptions\n");
-                // displayPrescriptions();
-                break; 
-            case 0:
-                printf(">> Returning to welcome menu...\n");
+                displayPrescriptions(list, n);
+                break;
+            case 3:
+                savePrescriptions(list, n);
+                printf("Da luu du lieu. Tam biet!\n");
                 break;
             default:
-                printf("Invalid choice!\n");    
+                printf("Lua chon khong hop le!\n");
         }
-    } while(choice != 0);
+    } while (choice != 3);
 }

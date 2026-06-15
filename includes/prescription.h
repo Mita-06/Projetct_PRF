@@ -1,16 +1,18 @@
 #ifndef PRESCRIPTION_H
 #define PRESCRIPTION_H
-#include "medicine.h"
 
 typedef struct {
     int prescriptionID;
     char patientName[50];
     char pharmacistName[50];
-    char medicineID[20];
+    int medicineID;
     int quantity;
 } Prescription;
 
+// Nguyên mẫu hàm
 void addPrescription(Prescription **list, int *n);
-long dateToLong(char *dateStr);
-int isDuplicatePrescriptionID(Prescription *list,int n,int id);
+void displayPrescriptions(Prescription *list, int n);
+void savePrescriptions(Prescription *list, int n);
+void loadPrescriptions(Prescription **list, int *n);
+
 #endif
