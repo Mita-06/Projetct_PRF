@@ -1,50 +1,56 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "prescription.h"
+#include "Prescription.h"
 
-void addPrescription(Prescription **list, int *n) {
-    *list = (Prescription *)realloc(*list, (*n + 1) * sizeof(Prescription));
-    
-    printf("Nhap ID don thuoc: ");
-    scanf("%d", &(*list)[*n].prescriptionID);
-    printf("Nhap ten benh nhan: ");
-    scanf(" %[^\n]s", (*list)[*n].patientName); // Dùng %[^\n] để nhập được cả khoảng trắng
-    printf("Nhap ten duoc si: ");
-    scanf(" %[^\n]s", (*list)[*n].pharmacistName);
-    printf("Nhap ID thuoc: ");
-    scanf("%d", &(*list)[*n].medicineID);
-    printf("Nhap so luong: ");
-    scanf("%d", &(*list)[*n].quantity);
-    
-    (*n)++;
+void initManager(PrescriptionManager* manager) {
+    manager->count = 0;
 }
 
-void displayPrescriptions(Prescription *list, int n) {
-    printf("\n%-5s | %-15s | %-15s | %-10s | %-8s\n", "ID", "Benh Nhan", "Duoc Si", "ID Thuoc", "So Luong");
-    printf("--------------------------------------------------------------------------\n");
-    for (int i = 0; i < n; i++) {
-        printf("%-5d | %-15s | %-15s | %-10d | %-8d\n", 
-               list[i].prescriptionID, list[i].patientName, list[i].pharmacistName, 
-               list[i].medicineID, list[i].quantity);
+int addPrescription(PrescriptionManager* manager, Prescription p) {
+    if (manager->count >= MAX_PRESCRIPTIONS) {
+        return 0;
     }
-}
-
-void savePrescriptions(Prescription *list, int n) {
-    FILE *fp = fopen("prescriptions.dat", "wb"); // [cite: 8]
-    if (fp) {
-        fwrite(&n, sizeof(int), 1, fp);
-        fwrite(list, sizeof(Prescription), n, fp);
-        fclose(fp);
+    
+    // Kiem tra trung ID
+    for (int i = 0; i < manager->count; i++) {
+        if (manager->list[i].id == p.id) {
+            return 0;
+        }
     }
+
+    manager->list[manager->count] = p;
+    manager->count++;
+    return 1;
 }
 
-void loadPrescriptions(Prescription **list, int *n) {
-    FILE *fp = fopen("prescriptions.dat", "rb"); // [cite: 8]
-    if (fp) {
-        fread(n, sizeof(int), 1, fp);
-        *list = (Prescription *)malloc((*n) * sizeof(Prescription)); // 
-        fread(*list, sizeof(Prescription), *n, fp);
-        fclose(fp);
+int deletePrescription(PrescriptionManager* manager, int id) {
+    int index = -1;
+    for (int i = 0; i < manager->count; i++) {
+        if (manager->list[i].id == id) {
+            index = i;
+            break;
+        }
+    }
+    
+    if (index == -1) {
+        return 0;
+    }
+
+    // Don mang
+    for (int i = index; i < manager->count - 1; i++) {
+        manager->list[i] = manager->list[i + 1];
+    }
+    manager->count--;
+    return 1;
+}
+
+void displayPrescriptions(PrescriptionManager* manager) {
+    printf("\nPrescription List\n");
+    for (int i = 0; i < manager->count; i++) {
+        printf("%d | %s | %s | %d | %d\n",
+               manager->list[i].id,
+               manager->list[i].patientName,
+               manager->list[i].pharmacistName,
+               manager->list[i].medicineId,
+               manager->list[i].quantity);
     }
 }
