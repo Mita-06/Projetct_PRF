@@ -1,40 +1,77 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include "prescription.h"
+#include "Prescription.h"
 
+//-----------------------------------------------------
+void displayMenu() {
+    printf("\n=======================================================\n");
+    printf("      PRESCRIPTION MANAGEMENT\n");
+    printf("=======================================================\n");
+    printf("1. Add Prescription\n");
+    printf("2. Delete Prescription\n");
+    printf("3. Display Prescriptions\n");
+    printf("0. Exit\n");
+    printf("=======================================================\n");
+}
+
+//-----------------------------------------------------
+Prescription inputPrescription() {
+    Prescription p;
+    printf("Input Id: "); 
+    scanf("%d", &p.id);
+    printf("Input Patient Name: "); 
+    scanf(" %[^\n]", p.patientName);
+    printf("Input Pharmacist Name: "); 
+    scanf(" %[^\n]", p.pharmacistName);
+    printf("Input Medicine Id: "); 
+    scanf("%d", &p.medicineId);
+    printf("Input Quantity: "); 
+    scanf("%d", &p.quantity);
+    return p;
+}
+
+//-----------------------------------------------------
+void processAdd(PrescriptionManager* manager) {
+    Prescription p = inputPrescription();
+    if (addPrescription(manager, p)) {
+        printf("Add successfully!\n");
+    } else {
+        printf("Failed: ID exists or list is full!\n");
+    }
+}
+
+//-----------------------------------------------------
+void processDelete(PrescriptionManager* manager) {
+    int id;
+    printf("Input Prescription Id: "); 
+    scanf("%d", &id);
+    if (deletePrescription(manager, id)) {
+        printf("Delete successfully!\n");
+    } else {
+        printf("Not found!\n");
+    }
+}
+
+//-----------------------------------------------------
+void processMenu(PrescriptionManager* manager, int choice) {
+    switch (choice) {
+        case 1: processAdd(manager); break;
+        case 2: processDelete(manager); break;
+        case 3: displayPrescriptions(manager); break;
+        case 0: printf("Goodbye!\n"); break;
+        default: printf("Invalid choice!\n");
+    }
+}
+
+//-----------------------------------------------------
 int main() {
-    Prescription *list = NULL;
-    int n = 0;
+    PrescriptionManager manager;
+    initManager(&manager);
     int choice;
-
-    // Tải dữ liệu cũ từ file
-    loadPrescriptions(&list, &n);
-
     do {
-        printf("\n--- MENU QUAN LY DON THUOC ---\n");
-        printf("1. Them don thuoc moi\n");
-        printf("2. Hien thi danh sach don thuoc\n");
-        printf("3. Thoat va Luu du lieu\n");
-        printf("Nhap lua chon cua ban: ");
+        displayMenu();
+        printf("Your choice: ");
         scanf("%d", &choice);
-
-        switch(choice) {
-            case 1:
-                addPrescription(&list, &n);
-                break;
-            case 2:
-                displayPrescriptions(list, n);
-                break;
-            case 3:
-                savePrescriptions(list, n);
-                printf("Da luu du lieu. Tam biet!\n");
-                break;
-            default:
-                printf("Lua chon khong hop le!\n");
-        }
-    } while (choice != 3);
-
-    // Giải phóng bộ nhớ trước khi thoát
-    free(list); 
+        processMenu(&manager, choice);
+    } while (choice != 0);
     return 0;
 }
