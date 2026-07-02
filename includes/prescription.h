@@ -1,18 +1,25 @@
 #ifndef PRESCRIPTION_H
 #define PRESCRIPTION_H
 
+#define MAX_PRESCRIPTIONS 100
+
 typedef struct {
-    int prescriptionID;
+    int id;
     char patientName[50];
     char pharmacistName[50];
-    int medicineID;
+    int medicineId;
     int quantity;
 } Prescription;
 
-// Nguyên mẫu hàm
-void addPrescription(Prescription **list, int *n);
-void displayPrescriptions(Prescription *list, int n);
-void savePrescriptions(Prescription *list, int n);
-void loadPrescriptions(Prescription **list, int *n);
+typedef struct {
+    Prescription list[MAX_PRESCRIPTIONS];
+    int count;
+} PrescriptionManager;
+
+void initManager(PrescriptionManager* manager);
+int addPrescription(PrescriptionManager* manager, Prescription p);
+Prescription inputPrescription();
+int deletePrescription(PrescriptionManager* manager, int id);
+void displayPrescriptions(PrescriptionManager* manager);
 
 #endif

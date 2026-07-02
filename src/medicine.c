@@ -35,3 +35,6 @@ void displayMedicine(Medicine m) {
     printf("Price: %.2f\n", m.price);
     printf("Expiry Date: %s\n", m.expiryDate);
 }
+void addMedicine() {
+    printf("Chuc nang them thuoc dang duoc phat trien...\n");
+}

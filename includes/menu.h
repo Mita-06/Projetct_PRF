@@ -6,6 +6,5 @@
 
 void mainMenu();
 void medicineMenu();
-void prescriptionMenu(); 
-
+void prescriptionMenu(PrescriptionManager* manager); 
 #endif

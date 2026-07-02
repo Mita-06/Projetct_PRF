@@ -6,6 +6,8 @@
 void mainMenu() {
     int choice;
 
+    PrescriptionManager pManager;
+    initManager(&pManager);
     do {
         printf("\n");
         printf("=================================\n");
@@ -25,8 +27,9 @@ void mainMenu() {
                 medicineMenu();
                 break;
             case 2:
-                printf("DEBUG: Entering prescription menu\n");
-                prescriptionMenu();
+                // printf("DEBUG: Entering prescription menu\n");
+                // prescriptionMenu();
+                prescriptionMenu(&pManager);
                 break;
             case 3:
                 printf("Goodbye!\n");
@@ -67,35 +70,53 @@ void medicineMenu() {
             default:
                 printf("Invalid choice!\n");
         }
-    } while(choice != 3);
+    } while(choice != 0);
 }
 
-void prescriptionMenu() {
+void prescriptionMenu(PrescriptionManager* manager) {
     int choice;
-    Prescription *list = NULL;
-    int n = 0;
-    loadPrescriptions(&list, &n);
     do {
-        printf("\n--- MENU QUAN LY DON THUOC ---\n");
-        printf("1. Them don thuoc moi\n");
-        printf("2. Hien thi danh sach don thuoc\n");
-        printf("3. Thoat va Luu du lieu\n");
-        printf("Nhap lua chon cua ban: ");
+        printf("\n=======================================================\n");
+        printf("      PRESCRIPTION MANAGEMENT\n");
+        printf("=======================================================\n");
+        printf("1. Add Prescription\n");
+        printf("2. Delete Prescription\n");
+        printf("3. Display Prescriptions\n");
+        printf("0. Back\n");
+        printf("=======================================================\n");
+        printf("Your choice: ");
+        rewind(stdin); // Xóa sạch mọi ký tự dư thừa trong bộ đệm bàn phím
         scanf("%d", &choice);
 
-        switch(choice) {
-            case 1:
-                addPrescription(&list, &n);
+        switch (choice) {
+            case 1: {
+                Prescription p = inputPrescription();
+                if (addPrescription(manager, p)) {
+                    printf("Add successfully!\n");
+                } else {
+                    printf("Failed: ID exists or list is full!\n");
+                }
                 break;
-            case 2:
-                displayPrescriptions(list, n);
+            }
+            case 2: {
+                int id;
+                printf("Input Prescription Id to delete: "); 
+                scanf("%d", &id);
+                if (deletePrescription(manager, id)) {
+                    printf("Delete successfully!\n");
+                } else {
+                    printf("Not found!\n");
+                }
                 break;
+            }
             case 3:
-                savePrescriptions(list, n);
-                printf("Da luu du lieu. Tam biet!\n");
+                displayPrescriptions(manager);
+                break;
+            case 0:
+                printf(">> Returning to main menu...\n");
                 break;
             default:
-                printf("Lua chon khong hop le!\n");
+                printf("Invalid choice!\n");
         }
-    } while (choice != 3);
+    } while (choice != 0);
 }
