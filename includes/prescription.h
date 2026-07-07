@@ -7,7 +7,7 @@ typedef struct {
     int id;
     char patientName[50];
     char pharmacistName[50];
-    int medicineId;
+    char medicineId[50];
     int quantity;
 } Prescription;
 

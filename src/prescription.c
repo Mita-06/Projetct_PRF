@@ -31,7 +31,7 @@ Prescription inputPrescription() {
     printf("Input Pharmacist Name: "); 
     scanf(" %[^\n]", p.pharmacistName);
     printf("Input Medicine Id: "); 
-    scanf("%d", &p.medicineId);
+    scanf(" %[^\n]", p.medicineId);
     printf("Input Quantity: "); 
     scanf("%d", &p.quantity);
     return p;
@@ -65,7 +65,7 @@ void displayPrescriptions(PrescriptionManager* manager) {
         return;
     }
     for (int i = 0; i < manager->count; i++) {
-        printf("%d | %s | %s | %d | %d\n",
+        printf("%d | %s | %s | %s | %d\n",
                manager->list[i].id,
                manager->list[i].patientName,
                manager->list[i].pharmacistName,

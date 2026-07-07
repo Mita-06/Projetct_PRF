@@ -2,28 +2,29 @@
 #include "../includes/menu.h"
 #include "../includes/medicine.h"
 #include "../includes/prescription.h"
+#include "../includes/fileio.h"
 
 void mainMenu() {
     int choice;
 
     PrescriptionManager pManager;
     initManager(&pManager);
+    loadPrescriptions(&pManager);
     do {
         printf("\n");
-        printf("=================================\n");
-        printf(" PHARMACY MANAGEMENT SYSTEM\n");
-        printf("=================================\n");
+        printf("=======================================================\n");
+        printf("              PHARMACY MANAGEMENT SYSTEM\n");
+        printf("=======================================================\n");
         printf("1. Medicine Management         \n");
         printf("2. Prescription Management     \n");
         printf("3. Exit                        \n");
-        printf("=================================\n");
+        printf("=======================================================\n");
         printf("Enter your choice: ");
 
         scanf("%d", &choice);
         printf("choice = %d\n", choice);
         switch(choice) {
             case 1:
-            printf("DEBUG: Entering medicine menu\n");
                 medicineMenu();
                 break;
             case 2:
@@ -43,11 +44,15 @@ void mainMenu() {
 void medicineMenu() {
     int choice;
     do {
-        printf("\n=== MEDICINE MENU ===\n");
+        printf("\n");
+        printf("=======================================================\n");
+        printf("                    MEDICINE MENU\n");
+        printf("=======================================================\n");
         printf("1. Add Medicine\n");
         printf("2. Display Medicines\n");
         printf("3. Search Medicine\n");
         printf("0. Back\n");
+        printf("=======================================================\n");
         printf("Enter your choice: ");
 
         scanf("%d", &choice);
@@ -57,6 +62,7 @@ void medicineMenu() {
                 break;
             case 2:
                 printf(" Displaying medicines\n");
+                
                 // displayMedicine();
                 break;
             case 3:
@@ -77,7 +83,7 @@ void prescriptionMenu(PrescriptionManager* manager) {
     int choice;
     do {
         printf("\n=======================================================\n");
-        printf("      PRESCRIPTION MANAGEMENT\n");
+        printf("                 PRESCRIPTION MANAGEMENT\n");
         printf("=======================================================\n");
         printf("1. Add Prescription\n");
         printf("2. Delete Prescription\n");
@@ -93,6 +99,7 @@ void prescriptionMenu(PrescriptionManager* manager) {
                 Prescription p = inputPrescription();
                 if (addPrescription(manager, p)) {
                     printf("Add successfully!\n");
+                    savePrescriptions(manager);
                 } else {
                     printf("Failed: ID exists or list is full!\n");
                 }
@@ -104,6 +111,7 @@ void prescriptionMenu(PrescriptionManager* manager) {
                 scanf("%d", &id);
                 if (deletePrescription(manager, id)) {
                     printf("Delete successfully!\n");
+                    savePrescriptions(manager);
                 } else {
                     printf("Not found!\n");
                 }
@@ -113,6 +121,7 @@ void prescriptionMenu(PrescriptionManager* manager) {
                 displayPrescriptions(manager);
                 break;
             case 0:
+                savePrescriptions(manager);
                 printf(">> Returning to main menu...\n");
                 break;
             default:
