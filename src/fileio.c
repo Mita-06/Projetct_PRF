@@ -11,13 +11,13 @@
 void saveMedicines(Medicine *list, int count) {
     FILE *fp = fopen(MEDICINE_FILE, "w");
     if (fp == NULL) {
-        printf("Cannot open %s for writing!\n", MEDICINE_FILE);
+        printf("\033[31mCannot open %s for writing!\033[0m\n", MEDICINE_FILE);
         return;
     }
     
     for (int i = 0; i < count; i++) {
         // Ghi id dưới dạng chuỗi %s (ví dụ: MED001)
-        fprintf(fp, "%s,%s,%s,%d,%.2f,%s\n",
+        fprintf(fp, "%s|%s|%s|%d|%.2f|%s\n",
                 list[i].id,
                 list[i].name,
                 list[i].category,
@@ -27,13 +27,13 @@ void saveMedicines(Medicine *list, int count) {
     }
     
     fclose(fp);
-    printf("Medicines saved successfully to %s!\n", MEDICINE_FILE);
+    printf("\033[32mMedicines saved successfully to %s!\033[0m\n", MEDICINE_FILE);
 }
 
 int loadMedicines(Medicine **list) {
     FILE *fp = fopen(MEDICINE_FILE, "r");
     if (fp == NULL) {
-        printf("No medicine file found at %s.\n", MEDICINE_FILE);
+        printf("\033[33mNotification: No medicine file found at %s.\033[0m\n", MEDICINE_FILE);
         *list = NULL;
         return 0;
     }
@@ -71,7 +71,7 @@ int loadMedicines(Medicine **list) {
         if (strlen(line) == 0) continue;
 
         // Quét chuỗi ID thuốc bằng định dạng %[^|] thay vì %d
-        int parsed = sscanf(line, "%15[^|]|%29[^|]|%19[^|]|%d|%f|%10[^|]",
+        int parsed = sscanf(line, "%[^|]|%[^|]|%[^|]|%d|%f|%[^|]",
                             (*list)[count].id,
                             (*list)[count].name,
                             (*list)[count].category,
@@ -84,7 +84,7 @@ int loadMedicines(Medicine **list) {
     }
 
     fclose(fp);
-    printf("Medicines loaded successfully (%d items)!\n", count);
+    printf("\033[32mMedicines loaded successfully (%d items)!\033[0m\n", count);
     return count; 
 }
 
@@ -94,7 +94,7 @@ int loadMedicines(Medicine **list) {
 void savePrescriptions(PrescriptionManager* manager) {
     FILE *fp = fopen(PRESCRIPTION_FILE, "w");
     if (fp == NULL) {
-        printf("Error: Cannot open file '%s' for writing!\n", PRESCRIPTION_FILE);
+        printf("\033[31mError: Cannot open file '%s' for writing!\033[0m\n", PRESCRIPTION_FILE);
         return;
     }
     
@@ -109,13 +109,13 @@ void savePrescriptions(PrescriptionManager* manager) {
     }
 
     fclose(fp);
-    printf("Prescriptions saved successfully to '%s'!\n", PRESCRIPTION_FILE);
+    printf("\033[32mPrescriptions saved successfully to '%s'!\033[0m\n", PRESCRIPTION_FILE);
 }
 
 int loadPrescriptions(PrescriptionManager* manager) {
     FILE *fp = fopen(PRESCRIPTION_FILE, "r");
     if (fp == NULL) {
-        printf("Notification: No prescription file found. Starting with 0 records.\n");
+        printf("\033[33mNotification: No prescription file found. Starting with 0 records.\033[0m\n");
         manager->count = 0;
         return 0;
     }
@@ -132,7 +132,7 @@ int loadPrescriptions(PrescriptionManager* manager) {
 
         Prescription p;
         // Đọc medicineId bằng định dạng chuỗi %[^|]
-        int parsed = sscanf(line, "%d|%15[^|]|%29[^|]|%19[^|]|%d",
+        int parsed = sscanf(line, "%d|%[^|]|%[^|]|%[^|]|%d",
                             &p.id,
                             p.patientName,
                             p.pharmacistName,
@@ -146,6 +146,6 @@ int loadPrescriptions(PrescriptionManager* manager) {
     }
 
     fclose(fp);
-    printf("Prescriptions loaded successfully (%d items)!\n", manager->count);
+    printf("\033[32mPrescriptions loaded successfully (%d items)!\033[0m\n", manager->count);
     return 1;
 }

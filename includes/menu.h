@@ -5,6 +5,6 @@
 #include "prescription.h"
 
 void mainMenu();
-void medicineMenu();
+void medicineMenu(MedicineManager* manager);
 void prescriptionMenu(PrescriptionManager* manager); 
 #endif

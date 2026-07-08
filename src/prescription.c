@@ -59,17 +59,25 @@ int deletePrescription(PrescriptionManager* manager, int id) {
 }
 
 void displayPrescriptions(PrescriptionManager* manager) {
-    printf("\nPrescription List\n");
+    printf("\n================================================================================\n");
+    printf("                          PRESCRIPTION LIST\n");
+    printf("================================================================================\n");
     if (manager->count == 0) {
-        printf("No prescriptions available in the system!\n");
+        printf("\033[33mNo prescriptions available in the system!\033[0m\n");
         return;
     }
+    printf("%-8s | %-15s | %-20s | %-12s | %-8s\n", 
+           "ID", "Patient Name", "Pharmacist", "Medicine ID", "Quantity");
+    printf("----------------------------------------------------------------------------\n");
+
+    // In từng dòng dữ liệu theo đúng khung độ rộng đã chia
     for (int i = 0; i < manager->count; i++) {
-        printf("%d | %s | %s | %s | %d\n",
+        printf("%-8d | %-15s | %-20s | %-12s | %-8d\n",
                manager->list[i].id,
                manager->list[i].patientName,
                manager->list[i].pharmacistName,
                manager->list[i].medicineId,
                manager->list[i].quantity);
     }
+    printf("================================================================================\n");
 }
