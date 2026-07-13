@@ -109,7 +109,7 @@ void displayMedicines(MedicineManager* manager) {
     }
     printf("%-8s | %-20s | %-15s | %-8s | %-10s | %-10s\n", 
            "ID", "Medicine Name", "Category", "Quantity", "Price", "Expiry Date");
-    printf("------------------------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------------\n");
     for (int i = 0; i < manager->count; i++) {
         printf("%-8s | %-20s | %-15s | %-8d | %-10.2f | %-10s\n", 
                manager->medicines[i].id,

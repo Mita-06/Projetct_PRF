@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../includes/prescription.h"
+#include "../includes/utils.h"
 
 void initManager(PrescriptionManager* manager) {
     manager->count = 0;
@@ -24,16 +25,17 @@ int addPrescription(PrescriptionManager* manager, Prescription p) {
 
 Prescription inputPrescription() {
     Prescription p;
-    printf("Input Id: "); 
-    scanf("%d", &p.id);
+    p.id = inputPositiveInt("Input Id: ");
     printf("Input Patient Name: "); 
-    scanf(" %[^\n]", p.patientName);
+    scanf(" %49[^\n]", p.patientName);
+    clearInputBuffer();
     printf("Input Pharmacist Name: "); 
-    scanf(" %[^\n]", p.pharmacistName);
+    scanf(" %49[^\n]", p.pharmacistName);
+    clearInputBuffer();
     printf("Input Medicine Id: "); 
-    scanf(" %[^\n]", p.medicineId);
-    printf("Input Quantity: "); 
-    scanf("%d", &p.quantity);
+    scanf(" %49[^\n]", p.medicineId);
+    clearInputBuffer();
+    p.quantity = inputPositiveInt("Input Quantity: ");
     return p;
 }
 
@@ -68,7 +70,7 @@ void displayPrescriptions(PrescriptionManager* manager) {
     }
     printf("%-8s | %-15s | %-20s | %-12s | %-8s\n", 
            "ID", "Patient Name", "Pharmacist", "Medicine ID", "Quantity");
-    printf("----------------------------------------------------------------------------\n");
+    printf("--------------------------------------------------------------------------------\n");
 
     // In từng dòng dữ liệu theo đúng khung độ rộng đã chia
     for (int i = 0; i < manager->count; i++) {
